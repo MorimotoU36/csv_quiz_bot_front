@@ -1,18 +1,46 @@
-<h1>CSV Quiz Bot</h1>
+<html>
+    <head>
+        <title>APIテスト</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script>
+            function get_func(url) {
+            fetch(url)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(text) {
+                let view = document.getElementById("view")
+                view.textContent = ""
+                // 取得テキストを一行ごとにループ（ただ改行して表示しているだけ）
+                text.split("\n").forEach((value) => {
+                view.insertAdjacentHTML('beforeend', value);
+                view.insertAdjacentHTML('beforeend', "<br>");
+                })
+            });
+            }
+        </script>
+    </head>
+<body>
+    <h1>CSV Quiz Bot</h1>
 
-<form>
-    <table style="border:none">
-        <tr>
-            <td>ファイル</td>
-            <td>:</td>
-            <td><input type="text"></td>
-        </tr>
-        <tr>
-            <td>問題番号</td>
-            <td>:</td>
-            <td><input type="text"></td>
-        </tr>
-    </table>
-    <!-- <input type="submit" value="問題取得"> -->
-    <input type="button" value="問題取得">
-</form>
+    <form>
+        <table style="border:none">
+            <tr>
+                <td>ファイル</td>
+                <td>:</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>問題番号</td>
+                <td>:</td>
+                <td><input type="text"></td>
+            </tr>
+        </table>
+    </form>
+
+    <input type="button" value="APIテスト" onClick="get_func('http://localhost:8000/getcsvlist')">
+
+    <div id="view"></div>
+</body>
+</html>
+
