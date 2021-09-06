@@ -9,15 +9,23 @@
                 return response.text();
             })
             .then(function(text) {
-                let view = document.getElementById("view")
-                view.textContent = ""
-                // 取得テキストを一行ごとにループ（ただ改行して表示しているだけ）
-                text.split("\n").forEach((value) => {
-                view.insertAdjacentHTML('beforeend', value);
-                view.insertAdjacentHTML('beforeend', "<br>");
-                })
+                text = JSON.parse(text.replace(/'/g,'"'))
+                console.log(text)
+                console.log(text['text'])
+                // ドロップダウンリストにCSVファイルのリストを定義
+                let file_list = document.getElementById("file_list");
+                for(var i=0;i<text['text'].length;i++){
+                    var target = document.createElement('option');
+                    target.innerText = text['text'][i]['csvname'];
+                    file_list.appendChild(target);
+                    console.log(text['text'][i]['csvname'])
+                }
             });
-            }
+            };
+
+            window.onload = function(){
+                get_func('http://localhost:8000/getcsvlist');
+            };
         </script>
     </head>
 <body>
@@ -28,7 +36,11 @@
             <tr>
                 <td>ファイル</td>
                 <td>:</td>
-                <td><input type="text"></td>
+                <td>
+                    <select id="file_list">
+                        <option selected>指定なし</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>問題番号</td>
@@ -38,9 +50,6 @@
         </table>
     </form>
 
-    <input type="button" value="APIテスト" onClick="get_func('http://localhost:8000/getcsvlist')">
-
-    <div id="view"></div>
 </body>
 </html>
 
