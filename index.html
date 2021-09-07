@@ -10,15 +10,13 @@
             })
             .then(function(text) {
                 text = JSON.parse(text.replace(/'/g,'"'))
-                console.log(text)
-                console.log(text['text'])
                 // ドロップダウンリストにCSVファイルのリストを定義
                 let file_list = document.getElementById("file_list");
                 for(var i=0;i<text['text'].length;i++){
                     var target = document.createElement('option');
                     target.innerText = text['text'][i]['csvname'];
+                    target.setAttribute('value',i+1);
                     file_list.appendChild(target);
-                    console.log(text['text'][i]['csvname'])
                 }
             });
             };
