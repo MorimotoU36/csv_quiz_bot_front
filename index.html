@@ -29,13 +29,13 @@
 <body>
     <h1>CSV Quiz Bot</h1>
 
-    <form>
+    <form action="http://localhost:8000/getquestion" method="POST">
         <table style="border:none">
             <tr>
                 <td>ファイル</td>
                 <td>:</td>
                 <td>
-                    <select id="file_list">
+                    <select id="file_list" name="file">
                         <option selected>指定なし</option>
                     </select>
                 </td>
@@ -43,9 +43,10 @@
             <tr>
                 <td>問題番号</td>
                 <td>:</td>
-                <td><input type="text"></td>
+                <td><input type="text" name="number"></td>
             </tr>
         </table>
+        <input type="submit" value="送信">
     </form>
 
 </body>
