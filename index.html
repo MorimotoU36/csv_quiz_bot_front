@@ -21,6 +21,28 @@
             });
             };
 
+            function ajax_post(url){
+                //入力したファイル番号と問題番号取得
+                let file_num = document.getElementById("file_list")
+                let question_num = document.getElementById("question_number")
+
+                //XMLHttpRequest用意
+                var xhr = new XMLHttpRequest();
+    
+                xhr.open('POST', url);
+                xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+                //送信
+                xhr.send( file_num.options[file_num.selectedIndex].value+'-'+question_num.value );
+
+                //受信して結果を表示
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        let question = document.getElementById("question")
+                        question.textContent = xhr.responseText
+                    }
+                }
+            }
+
             window.onload = function(){
                 get_func('http://localhost:8000/getcsvlist');
             };
@@ -29,25 +51,27 @@
 <body>
     <h1>CSV Quiz Bot</h1>
 
-    <form action="http://localhost:8000/getquestion" method="POST">
-        <table style="border:none">
-            <tr>
-                <td>ファイル</td>
-                <td>:</td>
-                <td>
-                    <select id="file_list" name="file">
-                        <option selected>指定なし</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>問題番号</td>
-                <td>:</td>
-                <td><input type="text" name="number"></td>
-            </tr>
-        </table>
-        <input type="submit" value="送信">
-    </form>
+    <table style="border:none">
+        <tr>
+            <td>ファイル</td>
+            <td>:</td>
+            <td>
+                <select id="file_list">
+                    <option selected value="0">指定なし</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>問題番号</td>
+            <td>:</td>
+            <td><input type="text" id="question_number"></td>
+        </tr>
+    </table>
+    <input type="button" value="送信" onClick="ajax_post('http://localhost:8000/getquestion')">
+
+    <hr>
+
+    <div id="question"></div>
 
 </body>
 </html>
