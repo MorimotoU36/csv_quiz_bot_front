@@ -37,8 +37,10 @@
                 //受信して結果を表示
                 xhr.onreadystatechange = function() {
                     if(xhr.readyState === 4 && xhr.status === 200) {
+                        const jsonObj = JSON.parse(xhr.responseText);      
+
                         let question = document.getElementById("question")
-                        question.textContent = xhr.responseText
+                        question.textContent = jsonObj.sentense
                     }
                 }
             }
