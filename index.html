@@ -21,6 +21,11 @@
             });
             };
 
+            //問題文
+            var sentense = ""
+            //答え
+            var quiz_answer = ""
+
             function ajax_post(url){
                 //入力したファイル番号と問題番号取得
                 let file_num = document.getElementById("file_list")
@@ -40,7 +45,12 @@
                         const jsonObj = JSON.parse(xhr.responseText);      
 
                         let question = document.getElementById("question")
-                        question.textContent = jsonObj.sentense
+                        let answer = document.getElementById("answer")
+                        sentense = jsonObj.sentense
+                        quiz_answer =  jsonObj.answer
+
+                        question.textContent = sentense
+                        answer.textContent = ""
                     }
                 }
             }
@@ -48,6 +58,12 @@
             window.onload = function(){
                 get_func('http://localhost:8000/getcsvlist');
             };
+
+            //答えの文を表示
+            function display_answer(){
+                let answer = document.getElementById("answer")
+                answer.textContent = quiz_answer
+            }
         </script>
     </head>
 <body>
@@ -74,6 +90,10 @@
     <hr>
 
     <div id="question"></div>
+
+    <input type="button" value="答え" onClick="display_answer()">
+
+    <div id="answer"></div>
 
 </body>
 </html>
