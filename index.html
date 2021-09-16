@@ -88,12 +88,15 @@
     <input type="button" value="送信" onClick="ajax_post('http://localhost:8000/getquestion')">
 
     <hr>
-
-    <div id="question"></div>
-
+    <span>問題：</span>
+    <span id="question"></span>
+    <hr>
     <input type="button" value="答え" onClick="display_answer()">
 
     <div id="answer"></div>
+
+    <input type="button" value="正解！" >
+    <input type="button" value="不正解" >
 
 </body>
 </html>
