@@ -21,16 +21,26 @@
             });
             };
 
+            //ファイル番号
+            let file_num = "0";
+            //問題番号
+            let question_num = "0";
             //問題文
-            var sentense = ""
+            let sentense = ""
             //答え
-            var quiz_answer = ""
+            let quiz_answer = ""
+
+            //ファイル番号の変更を反映する
+            function update_file_num(event){
+                file_num = document.getElementById("file_list")
+            }
+
+            //問題番号の変更を反映する
+            function update_question_num(event){
+                question_num = document.getElementById("question_number")
+            }
 
             function ajax_post(url){
-                //入力したファイル番号と問題番号取得
-                let file_num = document.getElementById("file_list")
-                let question_num = document.getElementById("question_number")
-
                 //XMLHttpRequest用意
                 var xhr = new XMLHttpRequest();
     
@@ -74,7 +84,7 @@
             <td>ファイル</td>
             <td>:</td>
             <td>
-                <select id="file_list">
+                <select id="file_list" onChange="update_file_num(event)">
                     <option selected value="0">指定なし</option>
                 </select>
             </td>
@@ -82,7 +92,7 @@
         <tr>
             <td>問題番号</td>
             <td>:</td>
-            <td><input type="text" id="question_number"></td>
+            <td><input type="text" id="question_number" onChange="update_question_num(event)"></td>
         </tr>
     </table>
     <input type="button" value="送信" onClick="ajax_post('http://localhost:8000/getquestion')">
