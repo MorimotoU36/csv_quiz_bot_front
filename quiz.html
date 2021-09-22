@@ -84,10 +84,6 @@
             function ajax_post(url){
                 //エラーメッセージをクリア
                 clear_error_message();
-                console.log(csv_item_list)
-                console.log(file_num.selectedIndex)
-                console.log(file_num.options[file_num.selectedIndex].value)
-                console.log(question_num)
                 //エラーチェック、問題番号が範囲内か
                 if(check_input_question_num(Number(file_num.options[file_num.selectedIndex].value))){
                     set_error_message("エラー：問題("+file_num.options[file_num.selectedIndex].innerText
