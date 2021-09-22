@@ -2,12 +2,13 @@
     <head>
         <title>APIテスト</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="./properties.js"></script>
         <script>
             function get_csv_name_list(){
                 //XMLHttpRequest用意
                 var xhr = new XMLHttpRequest();
                 
-                xhr.open('POST', 'http://localhost:5000/getcsvlist');
+                xhr.open('POST', getCsvNameListApi());
                 xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
                 //JSONデータ作成
                 var data = {
@@ -111,7 +112,7 @@
             <td><input type="text" id="question_number" onChange="update_question_num(event)"></td>
         </tr>
     </table>
-    <input type="button" value="送信" onClick="ajax_post('http://localhost:5000/getquestion')">
+    <input type="button" value="送信" onClick="ajax_post(getQuestionApi())">
 
     <hr>
     <span>問題：</span>
@@ -121,8 +122,8 @@
 
     <div id="answer"></div>
 
-    <input type="button" value="正解！" onClick="ajax_post('http://localhost:5000/correct')" >
-    <input type="button" value="不正解" onClick="ajax_post('http://localhost:5000/incorrect')">
+    <input type="button" value="正解！" onClick="ajax_post(getCorrectRegisterApi())" >
+    <input type="button" value="不正解" onClick="ajax_post(getIncorrectRegisterApi())">
 
 </body>
 </html>
