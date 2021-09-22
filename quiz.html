@@ -4,35 +4,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="./properties.js"></script>
         <script>
-            function get_csv_name_list(){
-                //XMLHttpRequest用意
-                var xhr = new XMLHttpRequest();
-                
-                xhr.open('POST', getCsvNameListApi());
-                xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
-                //JSONデータ作成
-                var data = {
-                    "text" : ''
-                }
-                //送信
-                xhr.send( JSON.stringify(data) );
-
-                //受信して結果を表示
-                xhr.onreadystatechange = function() {
-                    if(xhr.readyState === 4 && xhr.status === 200) {
-                        const text = JSON.parse(xhr.responseText);      
-
-                        // ドロップダウンリストにCSVファイルのリストを定義
-                        let file_list = document.getElementById("file_list");
-                        for(var i=0;i<text['text'].length;i++){
-                            var target = document.createElement('option');
-                            target.innerText = text['text'][i];
-                            target.setAttribute('value',i);
-                            file_list.appendChild(target);
-                        }
-                    }
-                }
-            }
+            //各csvのデータの個数
+            var csv_item_list = [];
 
             //ファイル番号
             let file_num = "0";
@@ -53,7 +26,76 @@
                 question_num = document.getElementById("question_number")
             }
 
+            //エラーメッセージの設定・表示
+            function set_error_message(msg){
+                err = document.getElementById("error")
+                err.innerText = msg
+            }
+
+            //エラーメッセージのクリア
+            function clear_error_message(){
+                err = document.getElementById("error")
+                err.innerText = ""
+            }
+
+            //エラーチェック①,入力した問題番号がcsvにある問題番号の範囲内か調べる
+            function check_input_question_num(file_index){
+                if(Number(question_num.value) < 1 || csv_item_list[file_index] < Number(question_num.value)){
+                    return true
+                }else{
+                    return false
+                }
+            }
+
+            //問題csvのリストを取得する
+            function get_csv_name_list(){
+                //エラーメッセージをクリア
+                clear_error_message();
+
+                //XMLHttpRequest用意
+                var xhr = new XMLHttpRequest();
+                
+                xhr.open('POST', getCsvNameListApi());
+                xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+                //JSONデータ作成
+                var data = {
+                    "text" : ''
+                }
+                //送信
+                xhr.send( JSON.stringify(data) );
+
+                //受信して結果を表示
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        const text = JSON.parse(xhr.responseText);      
+                        // ドロップダウンリストにCSVファイルのリストを定義
+                        let file_list = document.getElementById("file_list");
+                        for(var i=0;i<text['text'].length;i++){
+                            var target = document.createElement('option');
+                            target.innerText = text['text'][i];
+                            target.setAttribute('value',i);
+                            file_list.appendChild(target);
+                            csv_item_list.push(text['item'][i])
+                        }
+                    }
+                }
+            }
+
             function ajax_post(url){
+                //エラーメッセージをクリア
+                clear_error_message();
+                console.log(csv_item_list)
+                console.log(file_num.selectedIndex)
+                console.log(file_num.options[file_num.selectedIndex].value)
+                console.log(question_num)
+                //エラーチェック、問題番号が範囲内か
+                if(check_input_question_num(Number(file_num.options[file_num.selectedIndex].value))){
+                    set_error_message("エラー：問題("+file_num.options[file_num.selectedIndex].innerText
+                                        +")の問題番号は1〜"+csv_item_list[Number(file_num.options[file_num.selectedIndex].value)]
+                                        +"の範囲内で入力して下さい");
+                    return false;
+                }
+
                 //XMLHttpRequest用意
                 var xhr = new XMLHttpRequest();
     
@@ -95,6 +137,8 @@
     </head>
 <body>
     <h1>CSV Quiz Bot</h1>
+
+    <p id="error" style="color:red"></p>
 
     <table style="border:none">
         <tr>
