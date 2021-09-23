@@ -126,11 +126,10 @@ function display_answer(){
     }
 }
 
-
+//Ajaxで指定したurlにPOST通信を送る、受け取った後の処理関数も定義して引数に入力
 function post_data(url,jsondata,responsed_func){
     //XMLHttpRequest用意
     var xhr = new XMLHttpRequest();
-
     xhr.open('POST', url);
     xhr.setRequestHeader('content-type', 'application/json;charset=UTF-8');
 
@@ -140,7 +139,8 @@ function post_data(url,jsondata,responsed_func){
     //受信して結果を表示
     xhr.onreadystatechange = function() {
         if(xhr.readyState === 4 && xhr.status === 200) {
-            const jsonObj = JSON.parse(xhr.responseText);      
+            const jsonObj = JSON.parse(xhr.responseText);
+            //受信したデータを処理する      
             responsed_func(jsonObj);
         }
     }
