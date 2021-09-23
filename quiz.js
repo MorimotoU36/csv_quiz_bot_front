@@ -166,42 +166,6 @@ function incorrect_register(){
     })
 }
 
-function ajax_post(url){
-    //エラーメッセージをクリア
-    clear_error_message();
-    
-    //エラーチェック、問題番号が範囲内か
-    if(Number(file_num) == -1){
-        set_error_message("問題ファイルを選択して下さい");
-        return false;
-    }else if(check_input_question_num(file_num)){
-        set_error_message("エラー：問題("+file_name
-                            +")の問題番号は1〜"+csv_item_list[file_num]
-                            +"の範囲内で入力して下さい");
-        return false;
-    }
-
-    //JSONデータ作成
-    var data = {
-        "text" : String(file_num)+'-'+String(question_num)
-    }
-    post_data(url,data,function(resp){
-        if(resp['statusCode'] == 200){    
-            let question = document.getElementById("question")
-            let answer = document.getElementById("answer")
-            sentense = resp.sentense === undefined ? "" : resp.sentense
-            quiz_answer =  resp.answer === undefined ? "" : resp.answer
-
-            question.textContent = sentense
-            answer.textContent = ""
-        }else{
-            //内部エラー時
-            set_error_message(resp['statusCode']
-                                +" : "+resp['error_log']);
-        }
-    })
-}
-
 //答えの文を表示
 function display_answer(){
     //エラーメッセージをクリア
