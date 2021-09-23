@@ -138,6 +138,34 @@ function correct_register(){
     })
 }
 
+//問題に不正解のときに正解データ登録
+function incorrect_register(){
+    //エラーメッセージをクリア
+    clear_error_message();
+
+    //JSONデータ作成
+    var data = {
+        "text" : String(file_num)+'-'+String(question_num)
+    }
+    //外部APIに指定した問題の正解数を登録しに行く
+    post_data(getIncorrectRegisterApi(),data,function(resp){
+        if(resp['statusCode'] == 200){    
+            //問題と答えは削除
+            let question = document.getElementById("question")
+            let answer = document.getElementById("answer")
+            sentense = ""
+            quiz_answer = ""
+
+            question.textContent = ""
+            answer.textContent = ""
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
+        }
+    })
+}
+
 function ajax_post(url){
     //エラーメッセージをクリア
     clear_error_message();
