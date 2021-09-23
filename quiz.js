@@ -65,15 +65,21 @@ function get_csv_name_list(){
     //受信して結果を表示
     xhr.onreadystatechange = function() {
         if(xhr.readyState === 4 && xhr.status === 200) {
-            const text = JSON.parse(xhr.responseText);      
-            // ドロップダウンリストにCSVファイルのリストを定義
-            let file_list = document.getElementById("file_list");
-            for(var i=0;i<text['text'].length;i++){
-                var target = document.createElement('option');
-                target.innerText = text['text'][i];
-                target.setAttribute('value',i);
-                file_list.appendChild(target);
-                csv_item_list.push(text['item'][i])
+            const text = JSON.parse(xhr.responseText);  
+            if(text['statusCode'] == 200){    
+                // ドロップダウンリストにCSVファイルのリストを定義
+                let file_list = document.getElementById("file_list");
+                for(var i=0;i<text['text'].length;i++){
+                    var target = document.createElement('option');
+                    target.innerText = text['text'][i];
+                    target.setAttribute('value',i);
+                    file_list.appendChild(target);
+                    csv_item_list.push(text['item'][i])
+                }
+            }else{
+                //内部エラー時
+                set_error_message("statusCode："+text['statusCode']
+                                    +" "+text['error_log']);
             }
         }
     }
@@ -107,14 +113,19 @@ function ajax_post(url){
     xhr.onreadystatechange = function() {
         if(xhr.readyState === 4 && xhr.status === 200) {
             const jsonObj = JSON.parse(xhr.responseText);      
+            if(jsonObj['statusCode'] == 200){    
+                let question = document.getElementById("question")
+                let answer = document.getElementById("answer")
+                sentense = jsonObj.sentense
+                quiz_answer =  jsonObj.answer
 
-            let question = document.getElementById("question")
-            let answer = document.getElementById("answer")
-            sentense = jsonObj.sentense
-            quiz_answer =  jsonObj.answer
-
-            question.textContent = sentense
-            answer.textContent = ""
+                question.textContent = sentense
+                answer.textContent = ""
+            }else{
+                //内部エラー時
+                set_error_message(jsonObj['statusCode']
+                                    +" : "+jsonObj['error_log']);
+            }
         }
     }
 }
