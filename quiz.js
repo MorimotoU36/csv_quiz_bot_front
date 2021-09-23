@@ -4,7 +4,7 @@ var csv_item_list = [];
 //ファイル名
 let file_name = "";
 //ファイル番号
-let file_num = "0";
+let file_num = -1;
 //問題番号
 let question_num = "0";
 //問題文
@@ -32,8 +32,10 @@ function set_error_message(msg){
 
 //エラーメッセージのクリア
 function clear_error_message(){
-    err = document.getElementById("error")
-    err.innerText = ""
+    err = document.getElementsByClassName("error")
+    for(i=0;i<err.length;i++){
+        err[i].innerText = ""
+    }
 }
 
 //エラーチェック①,入力した問題番号がcsvにある問題番号の範囲内か調べる
@@ -90,7 +92,10 @@ function ajax_post(url){
     clear_error_message();
     
     //エラーチェック、問題番号が範囲内か
-    if(check_input_question_num(file_num)){
+    if(Number(file_num) == -1){
+        set_error_message("問題ファイルを選択して下さい");
+        return false;
+    }else if(check_input_question_num(file_num)){
         set_error_message("エラー：問題("+file_name
                             +")の問題番号は1〜"+csv_item_list[file_num]
                             +"の範囲内で入力して下さい");
@@ -132,6 +137,14 @@ function ajax_post(url){
 
 //答えの文を表示
 function display_answer(){
-    let answer = document.getElementById("answer")
-    answer.textContent = quiz_answer
+    //エラーメッセージをクリア
+    clear_error_message();
+
+    if(sentense == ""){
+        err = document.getElementById("answer_error")
+        err.innerText = "問題文がありません。"
+    }else{
+        let answer = document.getElementById("answer")
+        answer.textContent = quiz_answer
+    }
 }
