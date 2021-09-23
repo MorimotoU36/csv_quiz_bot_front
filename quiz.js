@@ -121,8 +121,8 @@ function ajax_post(url){
             if(jsonObj['statusCode'] == 200){    
                 let question = document.getElementById("question")
                 let answer = document.getElementById("answer")
-                sentense = jsonObj.sentense
-                quiz_answer =  jsonObj.answer
+                sentense = jsonObj.sentense === undefined ? "" : jsonObj.sentense
+                quiz_answer =  jsonObj.answer === undefined ? "" : jsonObj.answer
 
                 question.textContent = sentense
                 answer.textContent = ""
