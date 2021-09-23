@@ -55,6 +55,20 @@ function check_input_question_num(file_index){
     }
 }
 
+//min以上max未満の数値をランダムに取得
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+//min以上max以下の数値をランダムに取得
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
 //問題csvのリストを取得する
 function get_csv_name_list(){
     //メッセージをクリア
@@ -95,6 +109,38 @@ function get_question(){
                             +"の範囲内で入力して下さい");
         return false;
     }
+
+    //JSONデータ作成
+    var data = {
+        "text" : String(file_num)+'-'+String(question_num)
+    }
+    //外部APIへPOST通信、問題を取得しにいく
+    post_data(getQuestionApi(),data,function(resp){
+        if(resp['statusCode'] == 200){    
+            let question = document.getElementById("question")
+            let answer = document.getElementById("answer")
+            sentense = resp.sentense === undefined ? "" : resp.sentense
+            quiz_answer =  resp.answer === undefined ? "" : resp.answer
+
+            question.textContent = sentense
+            answer.textContent = ""
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
+        }
+    })
+}
+
+//ランダムに問題を選んで出題する
+function random_select_question(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //ファイル番号をランダムに選ぶ
+    file_num = getRandomInt(0,csv_item_list.length);
+    //問題番号をランダムに選ぶ
+    question_num = getRandomIntInclusive(1,csv_item_list[file_num])
 
     //JSONデータ作成
     var data = {
