@@ -48,15 +48,12 @@ function check_input_question_num(file_index){
 }
 
 //問題csvのリストを取得する
-function get_csv_name_list(url){
+function get_csv_name_list(){
     //エラーメッセージをクリア
     clear_error_message();
 
-    //JSONデータ作成
-    var data = {
-        "text" : ''
-    }
-    post_data(url,data,function(resp){
+    //外部APIへCSVリストを取得しにいく
+    post_data(getCsvNameListApi(),{"text" : ''},function(resp){
         if(resp['statusCode'] == 200){    
             // ドロップダウンリストにCSVファイルのリストを定義
             let file_list = document.getElementById("file_list");
