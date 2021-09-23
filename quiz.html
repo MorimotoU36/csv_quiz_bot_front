@@ -13,7 +13,7 @@
 <body>
     <h1>CSV Quiz Bot</h1>
 
-    <p id="error" style="color:red"></p>
+    <p id="error" class="error" style="color:red"></p>
 
     <table style="border:none">
         <tr>
@@ -32,15 +32,16 @@
         </tr>
     </table>
     <input type="button" value="送信" onClick="ajax_post(getQuestionApi())">
+    <input type="button" value="答え" onClick="display_answer()">
+    <span id="answer_error" class="error" style="color:red"></span>
 
     <hr>
     <span>問題：</span>
     <span id="question"></span>
     <hr>
-    <input type="button" value="答え" onClick="display_answer()">
-
-    <div id="answer"></div>
-
+    <span>答え：</span>
+    <span id="answer"></span>
+    <hr>
     <input type="button" value="正解！" onClick="ajax_post(getCorrectRegisterApi())" >
     <input type="button" value="不正解" onClick="ajax_post(getIncorrectRegisterApi())">
 
