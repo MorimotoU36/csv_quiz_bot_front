@@ -38,6 +38,14 @@ function clear_error_message(){
     }
 }
 
+//表示されているメッセージのクリア
+function clear_all_message(){
+    msg = document.getElementsByClassName("message")
+    for(i=0;i<msg.length;i++){
+        msg[i].innerText = ""
+    }
+}
+
 //エラーチェック①,入力した問題番号がcsvにある問題番号の範囲内か調べる
 function check_input_question_num(file_index){
     if(question_num < 1 || csv_item_list[file_index] < question_num ){
@@ -49,8 +57,8 @@ function check_input_question_num(file_index){
 
 //問題csvのリストを取得する
 function get_csv_name_list(){
-    //エラーメッセージをクリア
-    clear_error_message();
+    //メッセージをクリア
+    clear_all_message();
 
     //外部APIへCSVリストを取得しにいく
     post_data(getCsvNameListApi(),{"text" : ''},function(resp){
@@ -74,8 +82,8 @@ function get_csv_name_list(){
 
 //問題取得
 function get_question(){
-    //エラーメッセージをクリア
-    clear_error_message();
+    //メッセージをクリア
+    clear_all_message();
 
     //エラーチェック、問題番号が範囲内か
     if(Number(file_num) == -1){
@@ -112,8 +120,8 @@ function get_question(){
 
 //問題に正解したときに正解データ登録
 function correct_register(){
-    //エラーメッセージをクリア
-    clear_error_message();
+    //メッセージをクリア
+    clear_all_message();
 
     //JSONデータ作成
     var data = {
@@ -130,6 +138,10 @@ function correct_register(){
 
             question.textContent = ""
             answer.textContent = ""
+
+            //正解登録完了メッセージ
+            let result = document.getElementById("result")
+            result.textContent = resp['message']
         }else{
             //内部エラー時
             set_error_message(resp['statusCode']
@@ -140,8 +152,8 @@ function correct_register(){
 
 //問題に不正解のときに正解データ登録
 function incorrect_register(){
-    //エラーメッセージをクリア
-    clear_error_message();
+    //メッセージをクリア
+    clear_all_message();
 
     //JSONデータ作成
     var data = {
@@ -158,6 +170,10 @@ function incorrect_register(){
 
             question.textContent = ""
             answer.textContent = ""
+
+            //正解登録完了メッセージ
+            let result = document.getElementById("result")
+            result.textContent = resp['message']
         }else{
             //内部エラー時
             set_error_message(resp['statusCode']
@@ -168,8 +184,8 @@ function incorrect_register(){
 
 //答えの文を表示
 function display_answer(){
-    //エラーメッセージをクリア
-    clear_error_message();
+    //メッセージをクリア
+    clear_all_message();
 
     if(sentense == ""){
         err = document.getElementById("answer_error")
