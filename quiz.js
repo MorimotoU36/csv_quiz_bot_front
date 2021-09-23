@@ -48,44 +48,33 @@ function check_input_question_num(file_index){
 }
 
 //問題csvのリストを取得する
-function get_csv_name_list(){
+function get_csv_name_list(url){
     //エラーメッセージをクリア
     clear_error_message();
 
-    //XMLHttpRequest用意
-    var xhr = new XMLHttpRequest();
-    
-    xhr.open('POST', getCsvNameListApi());
-    xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
     //JSONデータ作成
     var data = {
         "text" : ''
     }
-    //送信
-    xhr.send( JSON.stringify(data) );
-
-    //受信して結果を表示
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-            const text = JSON.parse(xhr.responseText);  
-            if(text['statusCode'] == 200){    
-                // ドロップダウンリストにCSVファイルのリストを定義
-                let file_list = document.getElementById("file_list");
-                for(var i=0;i<text['text'].length;i++){
-                    var target = document.createElement('option');
-                    target.innerText = text['text'][i];
-                    target.setAttribute('value',i);
-                    file_list.appendChild(target);
-                    csv_item_list.push(text['item'][i])
-                }
-            }else{
-                //内部エラー時
-                set_error_message("statusCode："+text['statusCode']
-                                    +" "+text['error_log']);
+    post_data(url,data,function(resp){
+        if(resp['statusCode'] == 200){    
+            // ドロップダウンリストにCSVファイルのリストを定義
+            let file_list = document.getElementById("file_list");
+            for(var i=0;i<resp['text'].length;i++){
+                var target = document.createElement('option');
+                target.innerText = resp['text'][i];
+                target.setAttribute('value',i);
+                file_list.appendChild(target);
+                csv_item_list.push(resp['item'][i])
             }
+        }else{
+            //内部エラー時
+            set_error_message("statusCode："+resp['statusCode']
+                                +" "+resp['error_log']);
         }
-    }
+    })
 }
+
 
 function ajax_post(url){
     //エラーメッセージをクリア
@@ -102,37 +91,25 @@ function ajax_post(url){
         return false;
     }
 
-    //XMLHttpRequest用意
-    var xhr = new XMLHttpRequest();
-
-    xhr.open('POST', url);
-    xhr.setRequestHeader('content-type', 'application/json;charset=UTF-8');
     //JSONデータ作成
     var data = {
         "text" : String(file_num)+'-'+String(question_num)
     }
-    //送信
-    xhr.send( JSON.stringify(data) );
+    post_data(url,data,function(resp){
+        if(resp['statusCode'] == 200){    
+            let question = document.getElementById("question")
+            let answer = document.getElementById("answer")
+            sentense = resp.sentense === undefined ? "" : resp.sentense
+            quiz_answer =  resp.answer === undefined ? "" : resp.answer
 
-    //受信して結果を表示
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-            const jsonObj = JSON.parse(xhr.responseText);      
-            if(jsonObj['statusCode'] == 200){    
-                let question = document.getElementById("question")
-                let answer = document.getElementById("answer")
-                sentense = jsonObj.sentense === undefined ? "" : jsonObj.sentense
-                quiz_answer =  jsonObj.answer === undefined ? "" : jsonObj.answer
-
-                question.textContent = sentense
-                answer.textContent = ""
-            }else{
-                //内部エラー時
-                set_error_message(jsonObj['statusCode']
-                                    +" : "+jsonObj['error_log']);
-            }
+            question.textContent = sentense
+            answer.textContent = ""
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
         }
-    }
+    })
 }
 
 //答えの文を表示
@@ -146,5 +123,25 @@ function display_answer(){
     }else{
         let answer = document.getElementById("answer")
         answer.textContent = quiz_answer
+    }
+}
+
+
+function post_data(url,jsondata,responsed_func){
+    //XMLHttpRequest用意
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('POST', url);
+    xhr.setRequestHeader('content-type', 'application/json;charset=UTF-8');
+
+    //送信
+    xhr.send( JSON.stringify(jsondata) );
+
+    //受信して結果を表示
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            const jsonObj = JSON.parse(xhr.responseText);      
+            responsed_func(jsonObj);
+        }
     }
 }
