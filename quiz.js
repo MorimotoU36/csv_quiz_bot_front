@@ -234,8 +234,7 @@ function display_answer(){
     clear_all_message();
 
     if(sentense == ""){
-        err = document.getElementById("answer_error")
-        err.innerText = "問題文がありません。"
+        set_error_message("問題文がありません。")
     }else{
         let answer = document.getElementById("answer")
         answer.textContent = quiz_answer
