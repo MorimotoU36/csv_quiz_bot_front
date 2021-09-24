@@ -2,6 +2,7 @@
     <head>
         <title>APIテスト</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="./quiz.css">
         <script src="./properties.js"></script>
         <script src="./quiz.js"></script>
         <script>
@@ -13,8 +14,10 @@
 <body>
     <h1>CSV Quiz Bot</h1>
 
-    <p id="error" class="error massage" style="color:red"></p>
-    <p id="result" class="message" style="color:black"></p>
+    <div id="message_area">
+        <p id="error" class="error message" style="color:red"></p>
+        <p id="result" class="message" style="color:black"></p>
+    </div>
 
     <table style="border:none">
         <tr>
