@@ -4,7 +4,7 @@ div#message_area {
 
 footer{
     position: absolute;/*←絶対位置*/
-    bottom: 0; /*下に固定*/
+    bottom: 25px; /*下に固定*/
     width: 100%;
 }
 
@@ -15,5 +15,5 @@ footer{
 
 .right{
     position: absolute;/*←絶対位置*/
-    right: 3px;
+    right: 10px;
 }
