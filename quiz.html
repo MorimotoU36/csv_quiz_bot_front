@@ -35,8 +35,8 @@
             <td><input type="text" id="question_number" onChange="update_question_num(event)"></td>
         </tr>
     </table>
-    <input type="button" value="送信" onClick="get_question()">
-    <input type="button" value="ランダム" onClick="random_select_question()">
+    <input type="button" value="出題" onClick="get_question()">
+    <input type="button" value="ランダム出題" onClick="random_select_question()">
     <input type="button" value="答え" onClick="display_answer()">
     <span id="answer_error" class="error message" style="color:red"></span>
 
@@ -47,8 +47,8 @@
     <span>答え：</span>
     <span id="answer"></span>
     <hr>
-    <input type="button" value="正解！" onClick="correct_register()" >
-    <input type="button" value="不正解" onClick="incorrect_register()">
+    <input type="button" value="正解した！" onClick="correct_register()" >
+    <input type="button" value="間違えた・・" onClick="incorrect_register()">
 
 </body>
 </html>
