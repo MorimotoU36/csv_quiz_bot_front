@@ -81,6 +81,7 @@ function get_english_question(flag){
             let answer = document.getElementById("answer")
             sentense = resp.sentense === undefined ? "" : resp.sentense
             quiz_answer =  resp.answer === undefined ? "" : resp.answer
+            question_num = Number(resp['quiz_id'])
 
             question.textContent = sentense
             answer.textContent = ""
@@ -96,10 +97,10 @@ function get_english_question(flag){
 function correct_register(){
     //メッセージをクリア
     clear_all_message();
-
+    console.log(question_num)
     //JSONデータ作成
     var data = {
-        "text" : String(question_num)
+        "text" : 'E-'+String(question_num)
     }
     //外部APIに指定した問題の正解数を登録しに行く
     post_data(getCorrectRegisterApi(),data,function(resp){
