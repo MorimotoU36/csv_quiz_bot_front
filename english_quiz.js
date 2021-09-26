@@ -2,7 +2,7 @@
 let question_total_num = 0;
 
 //問題番号
-let question_num = "0";
+let question_num = -1;
 //問題文
 let sentense = ""
 //答え
@@ -58,71 +58,24 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 }
 
-//英語問題の個数を取得する
-function get_question_total_num(){
+//英語問題取得
+function get_english_question(flag){
     //メッセージをクリア
     clear_all_message();
 
-    //外部APIへCSVリストを取得しにいく
-    post_data(getCsvNameListApi(),{"text" : ''},function(resp){
-        if(resp['statusCode'] == 200){    
-            question_total_num = resp['item']
-        }else{
-            //内部エラー時
-            set_error_message("statusCode："+resp['statusCode']
-                                +" "+resp['error_log']);
-        }
-    })
-}
-
-//問題取得
-function get_question(){
-    //メッセージをクリア
-    clear_all_message();
-
-    //エラーチェック、問題番号が範囲内か
-    if(check_input_question_num()){
-        set_error_message("エラー：問題番号は1〜"+question_total_num
-                            +"の範囲内で入力して下さい");
+    //入力値エラーチェック
+    if(flag=='' && question_num == -1){
+        set_error_message("問題番号を入力して下さい");
         return false;
     }
 
     //JSONデータ作成
     var data = {
-        "text" : String(question_num)
+        "text" : String(question_num),
+        "random": flag
     }
     //外部APIへPOST通信、問題を取得しにいく
-    post_data(getQuestionApi(),data,function(resp){
-        if(resp['statusCode'] == 200){    
-            let question = document.getElementById("question")
-            let answer = document.getElementById("answer")
-            sentense = resp.sentense === undefined ? "" : resp.sentense
-            quiz_answer =  resp.answer === undefined ? "" : resp.answer
-
-            question.textContent = sentense
-            answer.textContent = ""
-        }else{
-            //内部エラー時
-            set_error_message(resp['statusCode']
-                                +" : "+resp['error_log']);
-        }
-    })
-}
-
-//ランダムに問題を選んで出題する
-function random_select_question(){
-    //メッセージをクリア
-    clear_all_message();
-
-    //問題番号をランダムに選ぶ
-    question_num = getRandomIntInclusive(1,question_total_num)
-
-    //JSONデータ作成
-    var data = {
-        "text" : String(question_num)
-    }
-    //外部APIへPOST通信、問題を取得しにいく
-    post_data(getQuestionApi(),data,function(resp){
+    post_data(getEnglishQuizApi(),data,function(resp){
         if(resp['statusCode'] == 200){    
             let question = document.getElementById("question")
             let answer = document.getElementById("answer")
