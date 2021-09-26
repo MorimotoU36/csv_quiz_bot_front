@@ -1,3 +1,19 @@
 div#message_area {
     height: 30px;
 }
+
+footer{
+    position: absolute;/*←絶対位置*/
+    bottom: 25px; /*下に固定*/
+    width: 100%;
+}
+
+.left{
+    position: absolute;/*←絶対位置*/
+    left: 0px;
+}
+
+.right{
+    position: absolute;/*←絶対位置*/
+    right: 10px;
+}

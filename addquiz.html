@@ -12,7 +12,7 @@
         </script>
     </head>
 <body>
-    <h1>CSV Quiz Bot</h1>
+    <h1>CSV Quiz Bot -問題追加-</h1>
 
     <div id="message_area">
         <p id="error" class="error message" style="color:red"></p>
@@ -29,31 +29,26 @@
                 </select>
             </td>
         </tr>
-        <tr>
-            <td>問題番号</td>
-            <td>:</td>
-            <td><input type="text" id="question_number" onChange="update_question_num(event)"></td>
-        </tr>
     </table>
-    <input type="button" value="出題" onClick="get_question()">
-    <input type="button" value="ランダム出題" onClick="random_select_question()">
-    <input type="button" value="答え" onClick="display_answer()">
-    <span id="answer_error" class="error message" style="color:red"></span>
+
+    <div>
+        <p>追加する問題（形式：テスト問題,正解,カテゴリ,画像ファイル名）</p>
+        <textarea id="input_data" cols="100" rows="10" placeholder="（入力形式：テスト問題,正解,カテゴリ,画像ファイル名）を何行でも"></textarea>
+    </div>
+
+    <input type="button" value="送信" onClick="add_quiz()">
 
     <hr>
-    <span>問題：</span>
-    <span id="question"></span>
-    <hr>
-    <span>答え：</span>
-    <span id="answer"></span>
-    <hr>
-    <input type="button" value="正解した！" onClick="correct_register()" >
-    <input type="button" value="間違えた・・" onClick="incorrect_register()">
+    <div>
+        <p>--実行ログ--</p>
+        <div id="add_log" class="message" style="color: black">
+        </div>
+    </div>
 
     <footer>
         <hr>
         <span class="left">
-            <a href='./addquiz.html'>問題追加</a>
+            <a href='./quiz.html'>問題出題</a>
         </span>
         <span class="right">
         ©️ Tatsuroh Wakasugi
