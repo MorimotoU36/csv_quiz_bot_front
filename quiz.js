@@ -260,3 +260,33 @@ function post_data(url,jsondata,responsed_func){
         }
     }
 }
+
+
+//(クイズ追加画面)入力したCSVデータを送信して追加する
+function add_quiz(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //エラーチェック、問題番号が範囲内か
+    if(Number(file_num) == -1){
+        set_error_message("問題ファイルを選択して下さい");
+        return false;
+    }
+
+    let input_data = document.getElementById("input_data").value
+
+    //JSONデータ作成
+    var data = {
+        "file" : String(file_num),
+        "data" : input_data
+    }
+
+    post_data(getAddQuizApi(),data,function(resp){
+        //正解登録完了メッセージ
+        let log = document.getElementById("add_log")
+        log.innerHTML = resp['log'].join('<br>')
+    })
+
+    //入力データをクリア
+    document.getElementById("input_data").value = ""
+}

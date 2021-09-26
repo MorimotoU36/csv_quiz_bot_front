@@ -33,7 +33,16 @@
 
     <div>
         <p>追加する問題（形式：テスト問題,正解,カテゴリ,画像ファイル名）</p>
-        <textarea cols="100" rows="10" placeholder="（入力形式：テスト問題,正解,カテゴリ,画像ファイル名）を何行でも"></textarea>
+        <textarea id="input_data" cols="100" rows="10" placeholder="（入力形式：テスト問題,正解,カテゴリ,画像ファイル名）を何行でも"></textarea>
+    </div>
+
+    <input type="button" value="送信" onClick="add_quiz()">
+
+    <hr>
+    <div>
+        <p>--実行ログ--</p>
+        <div id="add_log" class="message" style="color: black">
+        </div>
     </div>
 
     <footer>
