@@ -196,16 +196,11 @@ function add_quiz(){
     //メッセージをクリア
     clear_all_message();
 
-    //エラーチェック、問題番号が範囲内か
-    if(Number(file_num) == -1){
-        set_error_message("問題ファイルを選択して下さい");
-        return false;
-    }
-
     let input_data = document.getElementById("input_data").value
 
     //JSONデータ作成
     var data = {
+        "file" : "E",
         "data" : input_data
     }
 
