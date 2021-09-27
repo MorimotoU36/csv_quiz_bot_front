@@ -19,6 +19,12 @@ function update_file_num(event){
     file_name = fl.options[fl.selectedIndex].innerText
 }
 
+//現在選択されているファイルの番号を取得
+function get_file_num(){
+    fl = document.getElementById("file_list")
+    return Number(fl.options[fl.selectedIndex].value)
+}
+
 //問題番号の変更を反映する
 function update_question_num(event){
     question_num = Number(document.getElementById("question_number").value)
@@ -137,8 +143,13 @@ function random_select_question(){
     //メッセージをクリア
     clear_all_message();
 
-    //ファイル番号をランダムに選ぶ
-    file_num = getRandomInt(0,csv_item_list.length);
+    //ファイル番号を取得、「指定なし」の時はランダムに選ぶ
+    if(get_file_num() == -1){
+        file_num = getRandomInt(0,csv_item_list.length);
+    }else{
+        file_num = get_file_num();
+    }
+
     //問題番号をランダムに選ぶ
     question_num = getRandomIntInclusive(1,csv_item_list[file_num])
 
