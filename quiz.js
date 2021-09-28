@@ -326,14 +326,12 @@ function get_question_for_edit(){
     //外部APIへPOST通信、問題を取得しにいく
     post_data(getQuestionApi(),data,function(resp){
         if(resp['statusCode'] == 200){    
-            let question_sentense = document.getElementById("question_sentense")
-            let question_answer = document.getElementById("question_answer")
-            let question_category = document.getElementById("question_category")
-            let question_img_file_name = document.getElementById("question_img_file_name")
-            question_sentense.value = resp.question_sentense === undefined ? "" : resp.question_sentense
-            question_answer.value = resp.question_answer === undefined ? "" : resp.question_answer
-            question_category.value = resp.question_category === undefined ? "" : resp.question_category
-            question_img_file_name.value = resp.question_img_file_name === undefined ? "" : resp.question_img_file_name
+            document.getElementById("question_of_file").innerText = file_name
+            document.getElementById("question_num").innerText = question_num
+            document.getElementById("question_sentense").value = resp.question_sentense === undefined ? "" : resp.question_sentense
+            document.getElementById("question_answer").value = resp.question_answer === undefined ? "" : resp.question_answer
+            document.getElementById("question_category").value = resp.question_category === undefined ? "" : resp.question_category
+            document.getElementById("question_img_file_name").value = resp.question_img_file_name === undefined ? "" : resp.question_img_file_name
         }else{
             //内部エラー時
             set_error_message(resp['statusCode']
