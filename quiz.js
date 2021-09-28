@@ -301,3 +301,43 @@ function add_quiz(){
     //入力データをクリア
     document.getElementById("input_data").value = ""
 }
+
+//(問題編集画面での)問題取得
+function get_question_for_edit(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //エラーチェック、問題番号が範囲内か
+    if(Number(file_num) == -1){
+        set_error_message("問題ファイルを選択して下さい");
+        return false;
+    }else if(check_input_question_num(file_num)){
+        set_error_message("エラー：問題("+file_name
+                            +")の問題番号は1〜"+csv_item_list[file_num]
+                            +"の範囲内で入力して下さい");
+        return false;
+    }
+
+    //JSONデータ作成
+    var data = {
+        "text" : String(file_num)+'-'+String(question_num)
+    }
+
+    //外部APIへPOST通信、問題を取得しにいく
+    post_data(getQuestionApi(),data,function(resp){
+        if(resp['statusCode'] == 200){    
+            let question_sentense = document.getElementById("question_sentense")
+            let question_answer = document.getElementById("question_answer")
+            let question_category = document.getElementById("question_category")
+            let question_img_file_name = document.getElementById("question_img_file_name")
+            question_sentense.value = resp.question_sentense === undefined ? "" : resp.question_sentense
+            question_answer.value = resp.question_answer === undefined ? "" : resp.question_answer
+            question_category.value = resp.question_category === undefined ? "" : resp.question_category
+            question_img_file_name.value = resp.question_img_file_name === undefined ? "" : resp.question_img_file_name
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
+        }
+    })
+}
