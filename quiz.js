@@ -328,10 +328,42 @@ function get_question_for_edit(){
         if(resp['statusCode'] == 200){    
             document.getElementById("question_of_file").innerText = file_name
             document.getElementById("question_num").innerText = question_num
+            document.getElementById("question_of_file_num").innerText = get_file_num()
             document.getElementById("question_sentense").value = resp.question_sentense === undefined ? "" : resp.question_sentense
             document.getElementById("question_answer").value = resp.question_answer === undefined ? "" : resp.question_answer
             document.getElementById("question_category").value = resp.question_category === undefined ? "" : resp.question_category
             document.getElementById("question_img_file_name").value = resp.question_img_file_name === undefined ? "" : resp.question_img_file_name
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
+        }
+        console.log(document.getElementById("question_of_file_num").innerText)
+    })
+}
+
+//問題を編集
+function edit_question(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //JSONデータ作成
+    var data = {
+        "file" : document.getElementById("question_of_file").innerText,
+        "number": document.getElementById("question_num").innerText,
+        "file_num": document.getElementById("question_of_file_num").innerText,
+        "sentense": document.getElementById("question_sentense").value,
+        "answer": document.getElementById("question_answer").value,
+        "category": document.getElementById("question_category").value,
+        "img_file_name": document.getElementById("question_img_file_name").value
+    }
+
+    //外部APIに指定した問題の正解数を登録しに行く
+    post_data(getEditQuizApi(),data,function(resp){
+        if(resp['statusCode'] == 200){    
+            //編集完了メッセージ
+            let result = document.getElementById("result")
+            result.textContent = resp['message']
         }else{
             //内部エラー時
             set_error_message(resp['statusCode']
