@@ -301,3 +301,73 @@ function add_quiz(){
     //入力データをクリア
     document.getElementById("input_data").value = ""
 }
+
+//(問題編集画面での)問題取得
+function get_question_for_edit(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //エラーチェック、問題番号が範囲内か
+    if(Number(file_num) == -1){
+        set_error_message("問題ファイルを選択して下さい");
+        return false;
+    }else if(check_input_question_num(file_num)){
+        set_error_message("エラー：問題("+file_name
+                            +")の問題番号は1〜"+csv_item_list[file_num]
+                            +"の範囲内で入力して下さい");
+        return false;
+    }
+
+    //JSONデータ作成
+    var data = {
+        "text" : String(file_num)+'-'+String(question_num)
+    }
+
+    //外部APIへPOST通信、問題を取得しにいく
+    post_data(getQuestionApi(),data,function(resp){
+        if(resp['statusCode'] == 200){    
+            document.getElementById("question_of_file").innerText = file_name
+            document.getElementById("question_num").innerText = question_num
+            document.getElementById("question_of_file_num").innerText = get_file_num()
+            document.getElementById("question_sentense").value = resp.question_sentense === undefined ? "" : resp.question_sentense
+            document.getElementById("question_answer").value = resp.question_answer === undefined ? "" : resp.question_answer
+            document.getElementById("question_category").value = resp.question_category === undefined ? "" : resp.question_category
+            document.getElementById("question_img_file_name").value = resp.question_img_file_name === undefined ? "" : resp.question_img_file_name
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
+        }
+        console.log(document.getElementById("question_of_file_num").innerText)
+    })
+}
+
+//問題を編集
+function edit_question(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //JSONデータ作成
+    var data = {
+        "file" : document.getElementById("question_of_file").innerText,
+        "number": document.getElementById("question_num").innerText,
+        "file_num": document.getElementById("question_of_file_num").innerText,
+        "sentense": document.getElementById("question_sentense").value,
+        "answer": document.getElementById("question_answer").value,
+        "category": document.getElementById("question_category").value,
+        "img_file_name": document.getElementById("question_img_file_name").value
+    }
+
+    //外部APIに指定した問題の正解数を登録しに行く
+    post_data(getEditQuizApi(),data,function(resp){
+        if(resp['statusCode'] == 200){    
+            //編集完了メッセージ
+            let result = document.getElementById("result")
+            result.textContent = resp['message']
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
+        }
+    })
+}

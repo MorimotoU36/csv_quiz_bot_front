@@ -97,7 +97,7 @@ function get_english_question(flag){
 function correct_register(){
     //メッセージをクリア
     clear_all_message();
-    console.log(question_num)
+
     //JSONデータ作成
     var data = {
         "text" : 'E-'+String(question_num)
@@ -132,7 +132,7 @@ function incorrect_register(){
 
     //JSONデータ作成
     var data = {
-        "text" : String(question_num)
+        "text" : 'E-'+String(question_num)
     }
     //外部APIに指定した問題の正解数を登録しに行く
     post_data(getIncorrectRegisterApi(),data,function(resp){
