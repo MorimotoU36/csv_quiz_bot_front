@@ -213,3 +213,30 @@ function add_quiz(){
     //入力データをクリア
     document.getElementById("input_data").value = ""
 }
+
+//(問題編集画面での)問題取得
+function get_question_for_edit(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //JSONデータ作成
+    var data = {
+        "text" : 'E-'+String(question_num)
+    }
+
+    //外部APIへPOST通信、問題を取得しにいく
+    post_data(getQuestionApi(),data,function(resp){
+        if(resp['statusCode'] == 200){    
+            document.getElementById("question_num").innerText = question_num
+            document.getElementById("question_sentense").value = resp.question_sentense === undefined ? "" : resp.question_sentense
+            document.getElementById("question_answer").value = resp.question_answer === undefined ? "" : resp.question_answer
+            document.getElementById("question_category").value = resp.question_category === undefined ? "" : resp.question_category
+            document.getElementById("question_img_file_name").value = resp.question_img_file_name === undefined ? "" : resp.question_img_file_name
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
+        }
+        console.log(document.getElementById("question_of_file_num").innerText)
+    })
+}

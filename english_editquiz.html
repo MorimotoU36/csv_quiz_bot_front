@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="./quiz.css">
         <script src="./properties.js"></script>
-        <script src="./quiz.js"></script>
+        <script src="./english_quiz.js"></script>
     </head>
 <body>
     <h1>English Quiz</h1>
@@ -21,14 +21,10 @@
             <td><input type="text" id="question_number" onChange="update_question_num(event)"></td>
         </tr>
     </table>
-    <input type="button" value="取得" onClick="">
+    <input type="button" value="取得" onClick="get_question_for_edit()">
 
     <hr>
     <table>
-        <tr>
-            <td>ファイル</td>
-            <td><p id="question_of_file"></p></td>
-        </tr>
         <tr>
             <td>問題番号</td>
             <td><p id="question_num"></p></td>
