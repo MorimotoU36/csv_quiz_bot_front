@@ -240,3 +240,32 @@ function get_question_for_edit(){
         console.log(document.getElementById("question_of_file_num").innerText)
     })
 }
+
+//問題を編集
+function edit_question(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //JSONデータ作成
+    var data = {
+        "file_num": "E",
+        "number": document.getElementById("question_num").innerText,
+        "sentense": document.getElementById("question_sentense").value,
+        "answer": document.getElementById("question_answer").value,
+        "category": document.getElementById("question_category").value,
+        "img_file_name": document.getElementById("question_img_file_name").value
+    }
+
+    //外部APIに指定した問題を更新する
+    post_data(getEditQuizApi(),data,function(resp){
+        if(resp['statusCode'] == 200){    
+            //編集完了メッセージ
+            let result = document.getElementById("result")
+            result.textContent = resp['message']
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
+        }
+    })
+}
