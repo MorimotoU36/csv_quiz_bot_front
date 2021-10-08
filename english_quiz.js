@@ -85,6 +85,10 @@ function get_english_question(flag){
 
             question.textContent = sentense
             answer.textContent = ""
+
+            //カテゴリエリア
+            let category = resp.question_category
+            set_category_box(category)
         }else{
             //内部エラー時
             set_error_message(resp['statusCode']
@@ -268,4 +272,25 @@ function edit_question(){
                                 +" : "+resp['error_log']);
         }
     })
+}
+
+//取得した問題のカテゴリを表示
+function set_category_box(category){
+    let categories = category.split(':');
+
+    let category_area = document.getElementById("category_area")
+    //子要素(以前のカテゴリ)削除
+    category_area.innerHTML = ""
+
+    //カテゴリを一個一個表示させる
+    for(let i=0;i<categories.length;i++){
+        //カテゴリ１要素を作成
+        var newCategoryElement = document.createElement("span");
+        var newCategoryContent = document.createTextNode(categories[i]);
+        newCategoryElement.appendChild(newCategoryContent);
+        newCategoryElement.setAttribute("class","category-elements");
+
+        //カテゴリエリアの子要素にappend
+        category_area.appendChild(newCategoryElement);
+    }
 }
