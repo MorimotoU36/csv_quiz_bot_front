@@ -58,30 +58,81 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 }
 
+//問題の総数を取得する
+function get_total_question_num(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //外部APIへCSVリストを取得しにいく
+    post_data(getCsvNameListApi(),{"text" : 'E'},function(resp){
+        if(resp['statusCode'] == 200){    
+            // 問題の総数が帰ってくるので変数を設定
+            question_total_num = resp['text']
+        }else{
+            //内部エラー時
+            set_error_message("statusCode："+resp['statusCode']
+                                +" "+resp['error_log']);
+        }
+    })
+}
+
 //英語問題取得
-function get_english_question(flag){
+function get_english_question(){
     //メッセージをクリア
     clear_all_message();
 
     //入力値エラーチェック
-    if(flag=='' && question_num == -1){
+    if(question_num == -1){
         set_error_message("問題番号を入力して下さい");
         return false;
     }
 
     //JSONデータ作成
     var data = {
-        "text" : String(question_num),
-        "random": flag
+        "text" : 'E-'+String(question_num)
     }
     //外部APIへPOST通信、問題を取得しにいく
-    post_data(getEnglishQuizApi(),data,function(resp){
+    post_data(getQuestionApi(),data,function(resp){
         if(resp['statusCode'] == 200){    
             let question = document.getElementById("question")
             let answer = document.getElementById("answer")
             sentense = resp.sentense === undefined ? "" : resp.sentense
             quiz_answer =  resp.answer === undefined ? "" : resp.question_answer
             question_num = Number(resp['quiz_id'])
+
+            question.textContent = sentense
+            answer.textContent = ""
+
+            //カテゴリエリア
+            let category = resp.question_category
+            set_category_box(category)
+        }else{
+            //内部エラー時
+            set_error_message(resp['statusCode']
+                                +" : "+resp['error_log']);
+        }
+    })
+}
+
+//ランダムに問題を選んで出題する
+function random_select_question(){
+    //メッセージをクリア
+    clear_all_message();
+
+    //問題番号をランダムに選ぶ
+    question_num = getRandomIntInclusive(1,question_total_num)
+
+    //JSONデータ作成
+    var data = {
+        "text" : String(file_num)+'-'+String(question_num)
+    }
+    //外部APIへPOST通信、問題を取得しにいく
+    post_data(getQuestionApi(),data,function(resp){
+        if(resp['statusCode'] == 200){    
+            let question = document.getElementById("question")
+            let answer = document.getElementById("answer")
+            sentense = resp.sentense === undefined ? "" : resp.sentense
+            quiz_answer =  resp.answer === undefined ? "" : resp.answer
 
             question.textContent = sentense
             answer.textContent = ""

@@ -8,6 +8,11 @@
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@500&display=swap" rel="stylesheet">
         <script src="./properties.js"></script>
         <script src="./english_quiz.js"></script>
+        <script>
+            window.onload = function(){
+                get_total_question_num();
+            };
+        </script>
     </head>
 <body>
     <h1>English Quiz</h1>
@@ -24,8 +29,8 @@
             <td><input type="text" id="question_number" onChange="update_question_num(event)"></td>
         </tr>
     </table>
-    <input type="button" value="出題" onClick="get_english_question('')">
-    <input type="button" value="ランダム出題" onClick="get_english_question('true')">
+    <input type="button" value="出題" onClick="get_english_question()">
+    <input type="button" value="ランダム出題" onClick="random_select_question()">
     <input type="button" value="答え" onClick="display_answer()">
 
     <hr>
