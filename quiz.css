@@ -15,6 +15,10 @@ span.category-elements {
     font-size: small;
 }
 
+span#answer {
+    font-family: 'Noto Sans Mono', monospace;
+}
+
 footer{
     position: absolute;/*←絶対位置*/
     bottom: 25px; /*下に固定*/
