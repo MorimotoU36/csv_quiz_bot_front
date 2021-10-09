@@ -124,7 +124,7 @@ function random_select_question(){
 
     //JSONデータ作成
     var data = {
-        "text" : String(file_num)+'-'+String(question_num)
+        "text" : 'E-'+String(question_num)
     }
     //外部APIへPOST通信、問題を取得しにいく
     post_data(getQuestionApi(),data,function(resp){
