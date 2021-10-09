@@ -80,7 +80,7 @@ function get_english_question(flag){
             let question = document.getElementById("question")
             let answer = document.getElementById("answer")
             sentense = resp.sentense === undefined ? "" : resp.sentense
-            quiz_answer =  resp.answer === undefined ? "" : resp.answer
+            quiz_answer =  resp.answer === undefined ? "" : resp.question_answer
             question_num = Number(resp['quiz_id'])
 
             question.textContent = sentense
