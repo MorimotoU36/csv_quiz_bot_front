@@ -114,6 +114,9 @@ function get_question(){
                             +")の問題番号は1〜"+csv_item_list[file_num]
                             +"の範囲内で入力して下さい");
         return false;
+    }else if(document.getElementById("question_number").value == ""){
+        set_error_message("エラー：問題番号を入力して下さい");
+        return false;
     }
 
     //JSONデータ作成
