@@ -81,8 +81,9 @@ function get_english_question(){
     //メッセージをクリア
     clear_all_message();
 
+    //問題番号入力されてなかったらエラー
     //入力値エラーチェック
-    if(question_num == -1){
+    if(question_num == -1 || document.getElementById("question_number").value == ""){
         set_error_message("問題番号を入力して下さい");
         return false;
     }
