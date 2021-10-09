@@ -172,6 +172,11 @@ function correct_register(){
             //正解登録完了メッセージ
             let result = document.getElementById("result")
             result.textContent = resp['message']
+
+            //カテゴリ欄のクリア
+            let category_area = document.getElementById("category_area")
+            //子要素(以前のカテゴリ)削除
+            category_area.innerHTML = ""
         }else{
             //内部エラー時
             set_error_message(resp['statusCode']
@@ -204,6 +209,11 @@ function incorrect_register(){
             //正解登録完了メッセージ
             let result = document.getElementById("result")
             result.textContent = resp['message']
+
+            //カテゴリ欄のクリア
+            let category_area = document.getElementById("category_area")
+            //子要素(以前のカテゴリ)削除
+            category_area.innerHTML = ""
         }else{
             //内部エラー時
             set_error_message(resp['statusCode']
